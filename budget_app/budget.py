@@ -1,10 +1,9 @@
 class Category:
-    def __init__(self, p_category): 
+    def __init__(self, category): 
         self.ledger = []
         
         self.amount = 0
-        self.description = ''
-        
+        self.category = category        
         print('class: ' + str(self.ledger)) 
         print('amount: ' + str(self.amount))    
 		
@@ -42,9 +41,30 @@ class Category:
     def get_balance(self):
         return self.amount
 
+    def transfer(self, amount, category):
+        self.withdrawal_amount = amount
+        self.destination_category = category
+        if self.check_funds(self.withdrawal_amount):
+            self.description = "Transfer to " + self.destination_category
+            category.amount = category.amount + self.withdrawal_amount
+            transfer_ledger_object = {"amount": self.withdrawal_amount, "description": "Transfer from " +  self.category}
+
+    def check_funds(self, amount):
+        self.check_amount = amount - 1
+        if self.amount + self.check_amount >= 0:
+            return True
+        else:
+            return False
+
+
+
+
 def create_spend_chart(categories):
     return('100|')
 
+food = Category("Food")
+entertainment = Category("Entertainment")
+business = Category("Business")
 
 # food = Category("Food")
 # food.deposit(10, "initial deposit")
