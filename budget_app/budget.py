@@ -110,17 +110,72 @@ class Category:
 
 def create_spend_chart(p_categories):
     categories = p_categories
-    category_str = categories[0]
-    print(categories[0].category)
-    print(categories[1])
-    print(categories[2])
-    matrix = [['100'], ['90', '0'], ['80', '0', '0']]
-    matrix = [[0 for x in range(10)] for x in range(len(categories))]
-    print(matrix)
-    return_string =  "Percentage spent by category" + "\n"
+    #category_str = categories[0]
+    withdraw_total = 0
+    withdraw_category = []
+    withdraw_amounts = []
+    #process category objects
+    for i, value in enumerate(categories):
+        withdraw_category.append(value.category)
+        withdraw_amounts.append(value.withdrawAmount)
 
+    withdraw_total = sum(withdraw_amounts)
+    withdraw_percent = []
+
+    for i, value in enumerate(withdraw_amounts):
+        percentage = (100*value)/withdraw_total
+        withdraw_percent.append(percentage)
+
+    matrix_width = len(categories) + 2
+    matrix_depth = 11 
+    matrix = [[' ' for x in range(matrix_depth)] for x in range(matrix_width)]
+    
+    print(matrix)
+    matrix[0][0] = '100'
+    matrix[0][1] = ' 90'
+    matrix[0][2] = ' 80'
+    matrix[0][3] = ' 70'
+    matrix[0][4] = ' 60'
+    matrix[0][5] = ' 50'
+    matrix[0][6] = ' 40'
+    matrix[0][7] = ' 30'
+    matrix[0][8] = ' 20'
+    matrix[0][9] = ' 10'
+    matrix[0][10] = '  0'
+    
+    
+    for i, value in enumerate(matrix[4]):
+        matrix[4][i] = '\n'
+
+    #print(matrix)
+
+    # Process %'ages
+    for i, value1 in enumerate(withdraw_percent):
+        for x in range(matrix_depth):
+            #matrix[4][i] = '\n'
+            percent_test = int((matrix[0][x]))
+            if value1 >= percent_test:
+                matrix[i+1][x] = 'o'
+
+    print(matrix)
+
+    # X axis label matrix
+    label_matrix_width = len(categories) + 2
+    label_depth = len(max(withdraw_category, key=len))
+    label_matrix = [['' for x in range(label_depth)] for x in range(label_matrix_width)]
+
+    for i, value in enumerate(label_matrix[4]):
+        label_matrix[4][i] = '\n'
+
+    print(label_matrix)
+
+    top_line =  "Percentage spent by category\n"
+    sum_line = '----------\n'
+    return_string =  top_line + sum_line
 
     return(return_string)
+
+
 
 food = Category("Food")
 entertainment = Category("Entertainment")
