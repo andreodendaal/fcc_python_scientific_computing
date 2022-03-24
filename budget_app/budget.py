@@ -9,24 +9,6 @@ class Category:
         #print('class: ' + str(self.ledger)) 
         #print('amount: ' + str(self.amount))   
         # 
-    # def __repr__(self):
-    #     return_string =  "*************% s*************" % (self.category) + "/n"
-    #     #return_string =  "*************% s*************:% s " % (self.category , self.ledger)
-    #     self.total = 0
-    #     for key in self.ledger:
-    #         # for item in key:
-    #         #     return_string =  return_string + str(key[item])
-    #         return_substring23 = "{:<23}".format(key["description"][:23])
-    #         return_number = "{:.2f}".format(key["amount"])
-    #         self.total = self.total + key["amount"]
-    #         return_substring07 = "{:>7}".format(str(return_number))
-
-    #         return_string = return_string + return_substring23 + return_substring07 + "/n"
-
-    #     return_total = "{:.2f}".format(self.total)
-    #     return_string = return_string + "Total:" + "{:>7}".format(str(return_total))
-
-        # return return_string
 
     def __str__(self):
         return_string =  "*************% s*************" % (self.category) + "\n"
@@ -103,10 +85,7 @@ class Category:
             return True
         else:
             return False
-    
-
-
-
+   
 
 def create_spend_chart(p_categories):
     categories = p_categories
@@ -126,11 +105,12 @@ def create_spend_chart(p_categories):
         percentage = (100*value)/withdraw_total
         withdraw_percent.append(percentage)
 
-    matrix_width = len(categories) + 2
+    #matrix_width = len(categories) + 3
+    matrix_width = len(categories) + 3
     matrix_depth = 11 
-    matrix = [[' ' for x in range(matrix_depth)] for x in range(matrix_width)]
+    matrix = [['   ' for x in range(matrix_depth)] for x in range(matrix_width)]
     
-    print(matrix)
+    #print(matrix)
     matrix[0][0] = '100'
     matrix[0][1] = ' 90'
     matrix[0][2] = ' 80'
@@ -140,55 +120,123 @@ def create_spend_chart(p_categories):
     matrix[0][6] = ' 40'
     matrix[0][7] = ' 30'
     matrix[0][8] = ' 20'
-    matrix[0][9] = ' 10'
+    matrix[0][9] =  ' 10'
     matrix[0][10] = '  0'
+
+    matrix[1][0] = '|'
+    matrix[1][1] = '|'
+    matrix[1][2] = '|'
+    matrix[1][3] = '|'
+    matrix[1][4] = '|'
+    matrix[1][5] = '|'
+    matrix[1][6] = '|'
+    matrix[1][7] = '|'
+    matrix[1][8] = '|'
+    matrix[1][9] = '|'
+    matrix[1][10] = '|'
     
     
-    for i, value in enumerate(matrix[4]):
-        matrix[4][i] = '\n'
+    for i, value in enumerate(matrix[matrix_width-1]):
+        matrix[matrix_width-1][i] = '\n'
 
     #print(matrix)
 
     # Process %'ages
     for i, value1 in enumerate(withdraw_percent):
-        for x in range(matrix_depth):
-            #matrix[4][i] = '\n'
+        for x in range(matrix_depth):            
             percent_test = int((matrix[0][x]))
             if value1 >= percent_test:
-                matrix[i+1][x] = 'o'
+                matrix[i+2][x] = 'o'
 
-    print(matrix)
+    #print(matrix)
 
-    # X axis label matrix
+
+
+    top_line =  "Percentage spent by category\n"
+    sum_line = '    ----------\n'
+    return_string =  top_line 
+
+    for x in range(matrix_depth):
+        line = ''
+        for y in range(matrix_width):
+            value = matrix[y][x] 
+            if value == 'o':
+                ###
+                value = ' o '
+            elif value == '   ':
+                ###
+                 #value = '  '
+                 value = value  
+            line = line + value     
+        return_string = return_string + line
+        #print(return_string)
+
+    return_string = return_string + sum_line
+
+    # X axis lable matrix
+    #label_matrix_width = len(categories) + 3
     label_matrix_width = len(categories) + 2
+    
     label_depth = len(max(withdraw_category, key=len))
     label_matrix = [['' for x in range(label_depth)] for x in range(label_matrix_width)]
 
-    for i, value in enumerate(label_matrix[4]):
-        label_matrix[4][i] = '\n'
+    for i, category_str in enumerate(withdraw_category):
+        for x, str_element in enumerate(category_str):                    
+                label_matrix[i+1][x] = str_element
 
-    print(label_matrix)
+    for i, value in enumerate(label_matrix[label_matrix_width-1]):
+        #dont do the very last element
+        if i < label_depth - 1:
+            label_matrix[label_matrix_width-1][i] = '\n'
+        else:
+            label_matrix[label_matrix_width-1][i] = ''
 
-    top_line =  "Percentage spent by category\n"
-    sum_line = '----------\n'
-    return_string =  top_line + sum_line
+    #print(label_matrix)
+
+    #process X Lable
+
+    for x in range(label_depth):
+        line = ''
+        for y in range(label_matrix_width):
+            value = label_matrix[y][x] 
+            if value == '':
+                 value = ' ' 
+            else:
+                 value = value 
+
+            # if y == 0:
+            #     line = '  ' + value
+            # else:
+            #     line = line + '  ' + value  
+            if (y == (label_matrix_width -1)) and (x == (label_depth -1)):
+                line = line + '  '               
+            else:                
+                line = line + '  ' + value 
+
+        return_string = return_string + line
+        #print(return_string)
+
+    print(return_string)
+    
 
     return(return_string)
 
 
 
-food = Category("Food")
-entertainment = Category("Entertainment")
-business = Category("Business")
+# food = Category("Food")
+# entertainment = Category("Entertainment")
+# business = Category("Business")
+# whatever = Category("whatever")
+# whatever.deposit(1, "deposit")
+# whatever.withdraw(1.00)
+# food.deposit(900, "deposit")
+# entertainment.deposit(900, "deposit")
+# business.deposit(900, "deposit")
+# food.withdraw(105.55)
+# entertainment.withdraw(33.40)
+# business.withdraw(10.99)
 
-food.deposit(900, "deposit")
-entertainment.deposit(900, "deposit")
-business.deposit(900, "deposit")
-food.withdraw(105.55)
-entertainment.withdraw(33.40)
-business.withdraw(10.99)
-
-actual = create_spend_chart([business, food, entertainment])
+# actual = create_spend_chart([business, food, entertainment, whatever])
 #print(actual)
 
 # food.deposit(900, "deposit")
