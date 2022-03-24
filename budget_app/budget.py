@@ -26,9 +26,7 @@ class Category:
         return_string = return_string + "Total:" + "{:>7}".format(str(return_total))
 
         return return_string 
-            
-	 
-
+     
     def deposit(self, depositAmount, description=""):
         self.description = description
         self.depositAmount = depositAmount
@@ -123,17 +121,17 @@ def create_spend_chart(p_categories):
     matrix[0][9] =  ' 10'
     matrix[0][10] = '  0'
 
-    matrix[1][0] = '|'
-    matrix[1][1] = '|'
-    matrix[1][2] = '|'
-    matrix[1][3] = '|'
-    matrix[1][4] = '|'
-    matrix[1][5] = '|'
-    matrix[1][6] = '|'
-    matrix[1][7] = '|'
-    matrix[1][8] = '|'
-    matrix[1][9] = '|'
-    matrix[1][10] = '|'
+    matrix[1][0] = '| '
+    matrix[1][1] = '| '
+    matrix[1][2] = '| '
+    matrix[1][3] = '| '
+    matrix[1][4] = '| '
+    matrix[1][5] = '| '
+    matrix[1][6] = '| '
+    matrix[1][7] = '| '
+    matrix[1][8] = '| '
+    matrix[1][9] = '| '
+    matrix[1][10] = '| '
     
     
     for i, value in enumerate(matrix[matrix_width-1]):
@@ -150,31 +148,29 @@ def create_spend_chart(p_categories):
 
     #print(matrix)
 
-
-
     top_line =  "Percentage spent by category\n"
     sum_line = '    ----------\n'
     return_string =  top_line 
 
-    for x in range(matrix_depth):
+    #for x in range(matrix_depth):
+    x=0
+    for x in range(matrix_depth):    
         line = ''
         for y in range(matrix_width):
             value = matrix[y][x] 
-            if value == 'o':
-                ###
-                value = ' o '
-            elif value == '   ':
-                ###
-                 #value = '  '
-                 value = value  
+            if value == 'o':               
+                value = 'o  '
+            elif value == ' ':
+                value = value 
+
             line = line + value     
         return_string = return_string + line
         #print(return_string)
-
+    
     return_string = return_string + sum_line
-
+  
     # X axis lable matrix
-    #label_matrix_width = len(categories) + 3
+    
     label_matrix_width = len(categories) + 2
     
     label_depth = len(max(withdraw_category, key=len))
@@ -194,7 +190,7 @@ def create_spend_chart(p_categories):
     #print(label_matrix)
 
     #process X Lable
-
+    x=0
     for x in range(label_depth):
         line = ''
         for y in range(label_matrix_width):
@@ -203,11 +199,7 @@ def create_spend_chart(p_categories):
                  value = ' ' 
             else:
                  value = value 
-
-            # if y == 0:
-            #     line = '  ' + value
-            # else:
-            #     line = line + '  ' + value  
+ 
             if (y == (label_matrix_width -1)) and (x == (label_depth -1)):
                 line = line + '  '               
             else:                
@@ -216,7 +208,7 @@ def create_spend_chart(p_categories):
         return_string = return_string + line
         #print(return_string)
 
-    print(return_string)
+    #print(return_string)
     
 
     return(return_string)
