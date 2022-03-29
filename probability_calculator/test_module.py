@@ -9,14 +9,14 @@ class UnitTests(unittest.TestCase):
         expected = ["red","red","red","blue","blue"]
         self.assertEqual(actual, expected, 'Expected creation of hat object to add correct contents.')
 
-    # def test_hat_draw(self):
-    #     hat = prob_calculator.Hat(red=5,blue=2)
-    #     actual = hat.draw(2)
-    #     expected = ['blue', 'red']
-    #     self.assertEqual(actual, expected, 'Expected hat draw to return two random items from hat contents.')
-    #     actual = len(hat.contents)
-    #     expected = 5
-    #     self.assertEqual(actual, expected, 'Expected hat draw to reduce number of items in contents.')
+    def test_hat_draw(self):
+        hat = prob_calculator.Hat(red=5,blue=2)
+        actual = hat.draw(2)
+        expected = ['blue', 'red']
+        self.assertEqual(actual, expected, 'Expected hat draw to return two random items from hat contents.')
+        actual = len(hat.contents)
+        expected = 5
+        self.assertEqual(actual, expected, 'Expected hat draw to reduce number of items in contents.')
 
     # def test_prob_experiment(self):
     #     hat = prob_calculator.Hat(blue=3,red=2,green=6)
