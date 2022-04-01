@@ -18,10 +18,20 @@ class Hat:
   
     def draw(self, to_draw):
         random_draw = []
+        #draw_list = self.contents.copy()
+        
         if to_draw > self.num_balls:
-            return self.num_balls
+            return self.num_balls        
 
+        # for idx in range(to_draw):
+           
+        #     draw_item = random.choice(draw_list)
+        #     random_draw.append(draw_item)
+        #     draw_list.remove(draw_item)
+    
         for idx in range(to_draw):
+            if len(self.contents) == 0:
+                print("error!")
             draw_item = random.choice(self.contents)
             random_draw.append(draw_item)
             self.contents.remove(draw_item)
@@ -35,19 +45,48 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
     # To do this, we perform N experiments, count how many times M we get at least 2 red balls and 1 green ball, and estimate the probability as M/N. 
     # Each experiment consists of starting with a hat containing the specified balls, drawing a number of balls, 
     # and checking if we got the balls we were attempting to draw.
-    expected_match = 0
-    
+    match_counter = 0    
         
-    draw_hat = hat.contents
-        # do draw
-    result = hat.draw(num_balls_drawn)
-        # compare draw
+    #draw_hat = hat.contents
+    for ctr in range(num_experiments):      
+               
+        draw_hat = copy.deepcopy(hat)
+    # do draw
+        result = draw_hat.draw(num_balls_drawn)
+    # convert result into a dictionary {"blue":#,"green":#}
+        result_compare = {}
 
+        for item in result: 
+            if item in result_compare:
+                result_compare[item] = result_compare[item] + 1
+            else: 
+                result_compare[item] = 1
+
+    # compare draw expected_balls={"blue":2,"green":1}
+        match = False
+        #for key, value in expected_balls.items():
+        for key in expected_balls:
+            #if key[value] not in result_compare:
+            if key not in result_compare:
+                match = False                
+                break
+            
+            if expected_balls[key] == result_compare[key]:
+                match = True
+            else:
+                match = False
+
+
+        if match == True:
         # if draw equals expected_ balls add to counter
-    expected_match += 1
+            match_counter += 1
+            
+        
+        del draw_hat
+        match = False
     
     #Calculate the probability
-    probability = expected_match/num_experiments
+    probability = match_counter/num_experiments
 
     return probability
 
