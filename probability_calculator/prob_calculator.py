@@ -18,17 +18,19 @@ class Hat:
   
     def draw(self, to_draw):
         random_draw = []
+        
                 
-        if to_draw > self.num_balls:
-            return self.num_balls        
+        if to_draw  > self.num_balls:
+            return self.contents        
     
         for idx in range(to_draw):
-            # if len(self.contents) == 0:
-            #     print("error!")
-            draw_item = random.choice(self.contents)
-            random_draw.append(draw_item)
-            self.contents.remove(draw_item)
-        
+            if len(self.contents) == 0:
+                print("error!")
+            
+            draw_item = random.sample(self.contents, k = 1)            
+            random_draw.append(draw_item[0])
+            self.contents.remove(draw_item[0])
+
         return random_draw 
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
@@ -38,14 +40,15 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
     # To do this, we perform N experiments, count how many times M we get at least 2 red balls and 1 green ball, and estimate the probability as M/N. 
     # Each experiment consists of starting with a hat containing the specified balls, drawing a number of balls, 
     # and checking if we got the balls we were attempting to draw.
+    #random.seed(num_experiments)
+    match_counter = 0
 
-    match_counter = 0   
-        
     #draw_hat = hat.contents
     for ctr in range(num_experiments + 1):     
-               
+             
         draw_hat = copy.deepcopy(hat)
     # do draw
+         
         result = draw_hat.draw(num_balls_drawn)
     # convert result into a dictionary {"blue":#,"green":#}
         result_compare = {}
@@ -69,13 +72,14 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
 
         if match == True:
         # if draw equals expected_ balls add to counter
-            match_counter += 1
+            match_counter += 1            
             match = False            
         
         del draw_hat
-    print('Number of experiments count: ' + str(ctr))
-    print('Number of experiments param: ' + str(num_experiments))
-    print('Match counts: ' + str(match_counter))
+    # print('Number of experiments count: ' + str(ctr))
+    # print('Number of experiments param: ' + str(num_experiments))
+    # print('Match counts: ' + str(match_counter))
+
     #Calculate the probability
     probability = match_counter/num_experiments
 
